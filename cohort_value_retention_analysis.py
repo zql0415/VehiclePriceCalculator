@@ -82,9 +82,12 @@ def run_cohort_value_retention_analysis():
     plt.tight_layout()
     plt.savefig("dataviz/cohort_fixed_age_lines.png")
     plt.close()
-
-    model_df = df[df['car_age'] <= 10]
+    
+    model_df = df[df['car_age'] <= 10].copy()
+    model_df['car_age'] = model_df['car_age'].astype(int)
+    model_df['cohort'] = model_df['cohort'].astype(int)
     regression = smf.ols('value_retention_ratio ~ car_age + cohort', data=model_df).fit()
+
     print("\nRegression Summary: Value Retention ~ Car Age + Cohort")
     print(regression.summary())
 
